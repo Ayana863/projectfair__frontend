@@ -1,54 +1,38 @@
 
-import React, { useEffect, useState } from 'react'
-import {  Col, Row } from 'react-bootstrap'
-
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import View from '../components/View';
-import Profile from '../components/Profile';
-
-
 
 function Dashboard() {
+  const [dashboardName, setDashboardName] = useState('');
 
-  // login user name display dashboard logic..................................................................................
-  
-  const [dashboardName,setDashboardName]=useState('')
-  console.log(dashboardName);
-  
   useEffect(() => {
-    // To checkdata in sessionstorage 
-    if(sessionStorage.getItem("users")){
-      setDashboardName(JSON.parse(sessionStorage.getItem("users")).username)
-    }else{
-      setDashboardName('')
+    const user = sessionStorage.getItem("users");
+    if (user) {
+      setDashboardName(JSON.parse(user).username);
+    } else {
+      setDashboardName('');
     }
-    
-  }, [])
-  
-  // ..................................................................................................................
+  }, []);
+
   return (
-    <>
-      {/* First Section: Welcome User and Profile */}
-      <div>
-        <Row>
-          <Col style={{marginLeft:30}}><h2>Welcome {dashboardName.split(" ")[0]},
-            
-            </h2></Col>
-         
-         
+    <Container className="mt-5">
+      {/* Welcome Section */}
+      <Row className="align-items-center mb-4">
+        <Col xs={12} md={8}>
+          <h2>Welcome {dashboardName.split(" ")[0]}</h2>
+        </Col>
+        
+      </Row>
 
-         
-          <div>
-
-            <View/>
-          </div>
-          
-          {/* <Col style={{marginLeft:990,marginTop:-230}} ><Profile/></Col> */}
-        </Row>
-      </div>
-
-
-    </>
-  )
+      {/* View Section */}
+      <Row>
+        <Col>
+          <View />
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default Dashboard;

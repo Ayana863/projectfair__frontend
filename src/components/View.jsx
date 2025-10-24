@@ -1,22 +1,19 @@
-
 import React, { useContext, useEffect, useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import ProjectAdd from './ProjectAdd';
 import Edit from './Edit';
 import { deleteProjectAPI, getUserprojectAPI } from '../../Serveices/allAPI';
 import { addResponseContext, editResponseContext } from '../Context/ContexApi';
 
-
-
-
-
 function View() {
-  const{addResponse,setAddResponse}=useContext(addResponseContext)
-  const{editResponse,setEditResponse}=useContext(editResponseContext)
+  const { addResponse } = useContext(addResponseContext);
+  const { editResponse } = useContext(editResponseContext);
   const [getUserProject, setGetUserProject] = useState([]);
 
   useEffect(() => {
     userProject();
-  }, [addResponse,editResponse]);
+
+  }, [addResponse, editResponse]);
 
   const userProject = async () => {
     const token = sessionStorage.getItem("token");
@@ -37,52 +34,46 @@ function View() {
     }
   };
 
-
-
-  const handleDelete=async(pid)=>{
-    //  to create reqheader 
-    const token=sessionStorage.getItem("token")
-    if(token){
-      const reqHeader={
-         "content-type":"application/json",
-         "authorization":`Bearer ${token}`
+  const handleDelete = async (pid) => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      const reqHeader = {
+        "content-type": "application/json",
+        "authorization": `Bearer ${token}`
+      };
+      try {
+        await deleteProjectAPI(pid, reqHeader);
+        userProject();
+      } catch (err) {
+        console.log(err);
       }
-    try{
- 
-        const result= await deleteProjectAPI(pid,reqHeader)
-       userProject(result.data)
-      
-
-    }catch(err){
-      console.log(err);
-      
     }
-      
-      
-   
-  }
-}
+  };
 
   return (
-    <>
-      {/* Title & Add Project Button */}
-      <div className='d-flex align-items-center gap-3 mt-5 ms-5'>
-        <h3 className='text-primary'>All Projects</h3>
-        <ProjectAdd />
-      </div>
+    <Container className="mt-5">
 
-      {/* Project List */}
-      {
-        getUserProject?.length > 0 &&
-        getUserProject.map((project, index) => (
-          <div key={index} className="row justify-content-between mt-3">
-            <div className="col-md-8" style={{ maxWidth: '700px' }}>
-              <div className="border rounded shadow p-3 d-flex justify-content-between align-items-center flex-wrap">
-                {/* Project Title */}
-                <h5 className="mb-0">{project.title}</h5>
+    
+      <Row className="align-items-center mb-4">
+        <Col xs={12} md={6}>
+          <h3 className="text-primary fw-bold">All Projects</h3>
+        </Col>
+        <Col xs={12} md={6} className="text-md-end text-center mt-3 mt-md-0">
+          <ProjectAdd />
+        </Col>
+      </Row>
 
-                {/* edit Icons */}
-                <div className="d-flex align-items-center gap-4">
+  
+      <Row className="gy-3 justify-content-center">
+        {getUserProject?.length > 0 ? (
+          getUserProject.map((project, index) => (
+            <Col xs={12} md={10} lg={8} key={index}>
+              <div className="border rounded shadow-sm p-3 d-flex justify-content-between align-items-center gap-3 flex-wrap">
+             
+                <h5 className="mb-0 text-break">{project.title}</h5>
+
+              
+                <div className="d-flex align-items-center gap-3">
                   <Edit project={project} />
 
                   <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn p-0">
@@ -93,20 +84,22 @@ function View() {
                     <i className="fa-solid fa-globe fs-5"></i>
                   </a>
 
-                  <button onClick={()=>handleDelete(project?._id)} className="btn p-0">
+                  <button onClick={() => handleDelete(project?._id)} className="btn p-0">
                     <i className="fa-solid fa-trash text-danger fs-5"></i>
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        ))
-      }
-      
-    </>
+            </Col>
+          ))
+        ) : (
+          <Col xs={12} className="text-center text-secondary">
+            <p>No projects found. Add your first project!</p>
+          </Col>
+        )}
+      </Row>
+
+    </Container>
   );
 }
 
 export default View;
-
-

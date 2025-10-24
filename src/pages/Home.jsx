@@ -1,203 +1,123 @@
-import React, { useEffect, useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
-import home from '../assets/home.png'
-import ProjectCard from '../components/ProjectCard'
-import { Link, useNavigate } from 'react-router-dom'
+
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Button, Container } from 'react-bootstrap';
+import home from '../assets/home.png';
+import ProjectCard from '../components/ProjectCard';
+import { Link, useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import face1 from '../assets/face1.png'
-import face2 from '../assets/face2.png'
-import face3 from '../assets/face3.png'
+import face1 from '../assets/face1.png';
+import face2 from '../assets/face2.png';
+import face3 from '../assets/face3.png';
 import { ToastContainer, toast } from 'react-toastify';
-import { getHomeprojectAPI } from '../../Serveices/allAPI'
-
-
-
-
-
-
+import { getHomeprojectAPI } from '../../Serveices/allAPI';
 
 function Home() {
-  // To Store get HomeProject from API
-  const [getHomeProjectData, setGetHomeProjectData] = useState([])
-  console.log(getHomeProjectData);
-  const navigate = useNavigate()
-
-  // api call define getHomeprojectApi
+  const [getHomeProjectData, setGetHomeProjectData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getHomeproject()
-  }, [])
+    getHomeproject();
+  }, []);
 
-  // .............................................................................................................
-  // get project in home page 
   const getHomeproject = async () => {
     try {
-      const result = await getHomeprojectAPI()
-      console.log(result);
-      if (result.status == 200) {
-        setGetHomeProjectData(result.data)
+      const result = await getHomeprojectAPI();
+      if (result.status === 200) {
+        setGetHomeProjectData(result.data);
       }
-
-
     } catch (err) {
       console.log(err);
+    }
+  };
 
-    }
-  }
-  // ...............................................................................................................
-  // button clicktime view all projects only authorized user
   const handleAllProjects = () => {
-    // first check user login or not
-    if (sessionStorage.getItem("token")) {
-      navigate('/projects')
+    if (sessionStorage.getItem('token')) {
+      navigate('/projects');
     } else {
-      toast.warning("please login")
+      toast.warning('Please login');
     }
-  }
+  };
+
   return (
     <>
-      <div className='d-flex ms-5 justify-content-center'>
-        <Row>
-          <Col>
-            < div className='ms-4' style={{ marginTop: 150 }} >
-              <h1 className='mt-4'>PROJECT FAIR</h1>
-              <p className="text-muted small mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error beatae pariatur,
-                iure quibusdam laborum consectetur earum eveniet iste praesentium exercitationem
-                impedit, reprehenderit quae adipisci inventore nostrum ea, voluptate nam! Aliquam.</p>
+      <Container className="mt-5">
+        {/* Hero Section */}
+        <Row className="align-items-center">
+          <Col md={6} className="text-center text-md-start">
+            <h1 className="mb-3">PROJECT FAIR</h1>
+            <p className="text-muted">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Error beatae pariatur, iure
+              quibusdam laborum consectetur earum eveniet iste praesentium exercitationem impedit,
+              reprehenderit quae adipisci inventore nostrum ea, voluptate nam! Aliquam.
+            </p>
 
-
-              {
-
-                sessionStorage.getItem("token") ?
-                  <div><Link to={'/dashboard'} style={{ textDecoration: 'none' }}><button className='btn btn-danger fw-bold p-2 mt-2'>Go to Dashboard</button></Link></div>
-
-                  :
-
-                  <div><Link to={'/register'} style={{ textDecoration: 'none' }}><button className='btn btn-danger fw-bold p-2 mt-2'>Manage your projects</button></Link></div>
-
-
-              }
-
-
-
-            </div>
-
-
+            {sessionStorage.getItem('token') ? (
+              <Link to="/dashboard" className="text-decoration-none">
+                <Button variant="danger" className="fw-bold mt-3">
+                  Go to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/register" className="text-decoration-none">
+                <Button variant="danger" className="fw-bold mt-3">
+                  Manage your projects
+                </Button>
+              </Link>
+            )}
           </Col>
-          <Col>
-            <div className='mt-5'>
-              <img style={{ marginLeft: 40 }} src={home} alt="" width={400} />
-            </div>
+
+          <Col md={6} className="text-center mt-4 mt-md-0">
+            <img src={home} alt="Home" className="img-fluid" style={{ maxHeight: 400 }} />
           </Col>
         </Row>
-      </div>
 
-
-      <div>
-        <h3 className=' text-center text-primary'>EXPLORE OUR PROJECTS</h3>
-        <marquee className="mt-5">
-          <div className='d-flex'>
-            {getHomeProjectData?.length > 0 &&
-              getHomeProjectData?.map(project => (
-                <marquee><ProjectCard Displaydata={project} /></marquee>
-              ))
-
-
-            }
-          </div>
-
-
-        </marquee>
-
-
-
-
-
-
-
-
-
-
-
-        <button className='btn ' onClick={handleAllProjects}><Link style={{ marginLeft: 600, }}>Clickhere to view more projects </Link></button>
-
-      </div>
-      <div >
-        <h3 style={{ marginLeft: 600, marginTop: 60 }}>Our Testimonial</h3>
-      </div>
-
-      <div className='ms-5 mt-5 '>
-        <Row>
-          <Col className='mb-4'>
-            <Card style={{ width: '18rem' }} className="shadow rounded-5 ">
-              <Card.Img variant="top" src={face3} />
-              <Card.Body>
-                <Card.Title className='text-center'>Nita Marry</Card.Title>
-                <div className='text-center mb-4 '>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                </div>
-
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-
-              </Card.Body>
-            </Card>
-
-
-          </Col>
-          <Col className='mb-4'>
-
-            <Card style={{ width: '18rem' }} className="shadow rounded-5 ">
-              <Card.Img variant="top" src={face2} />
-              <Card.Body>
-                <Card.Title className='text-center'>Max Miller</Card.Title>
-                <div className='text-center mb-4 '>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                </div>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col className='mb-4'>
-            <Card style={{ width: '18rem' }} className="shadow rounded-5 ">
-              <Card.Img variant="top" src={face1} />
-              <Card.Body>
-                <Card.Title className='text-center'>Devid Surya</Card.Title>
-                <div className='text-center mb-4 '>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                  <i class="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                </div>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-
-              </Card.Body>
-            </Card>
-          </Col>
+        {/* Projects Section */}
+        <h3 className="text-center text-primary mt-5 mb-4">EXPLORE OUR PROJECTS</h3>
+        <Row className="g-3 justify-content-center mb-4">
+          {getHomeProjectData.length > 0 &&
+            getHomeProjectData.map((project) => (
+              <Col key={project._id} xs={12} sm={6} md={4} lg={3}>
+                <ProjectCard Displaydata={project} />
+              </Col>
+            ))}
         </Row>
-      </div>
 
-      <ToastContainer position="top-right" autoClose={5000} theme="colored"
+        <div className="text-center mb-5">
+          <Button variant="outline-primary" onClick={handleAllProjects}>
+            Click here to view more projects
+          </Button>
+        </div>
 
-      />
+        {/* Testimonial Section */}
+        <h3 className="text-center text-primary mb-4">Our Testimonial</h3>
+        <Row className="g-4 justify-content-center">
+          {[face3, face2, face1].map((face, idx) => (
+            <Col key={idx} xs={12} sm={6} md={4}>
+              <Card className="shadow rounded-5 h-100 text-center">
+                <Card.Img variant="top" src={face} />
+                <Card.Body>
+                  <Card.Title>
+                    {idx === 0 ? 'Nita Marry' : idx === 1 ? 'Max Miller' : 'Devid Surya'}
+                  </Card.Title>
+                  <div className="mb-3">
+                    {[...Array(4)].map((_, i) => (
+                      <i key={i} className="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
+                    ))}
+                  </div>
+                  <Card.Text>
+                    Some quick example text to build on the card title and make up the bulk of the
+                    card's content.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
 
+      <ToastContainer position="top-right" autoClose={5000} theme="colored" />
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

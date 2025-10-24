@@ -75,6 +75,6 @@ export const UpdateProjectAPI = async (pid, reqBody, reqHeader) => {
 };
 
 export const deleteProjectAPI = async (pid, reqHeader) => {
-  return await commonAPI("DELETE", `${SERVER_URL}/delete-project/${pid}`, null, reqHeader);
+  return await commonAPI("DELETE", `${SERVER_URL}/delete-project/${pid}`, undefined, reqHeader);
 };
 
