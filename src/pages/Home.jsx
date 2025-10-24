@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Container } from 'react-bootstrap';
-import home from '../assets/home.png';
+import home from '../assets/homeImg.png';
 import ProjectCard from '../components/ProjectCard';
 import { Link, useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
@@ -46,9 +46,9 @@ function Home() {
           <Col md={6} className="text-center text-md-start">
             <h1 className="mb-3">PROJECT FAIR</h1>
             <p className="text-muted">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Error beatae pariatur, iure
-              quibusdam laborum consectetur earum eveniet iste praesentium exercitationem impedit,
-              reprehenderit quae adipisci inventore nostrum ea, voluptate nam! Aliquam.
+              Turn your ideas into impact! ProjectFair is a smart project showcase platform
+              where students, freelancers, and professionals can display their best work 
+             and attract real opportunities from companies and clients.
             </p>
 
             {sessionStorage.getItem('token') ? (
@@ -90,29 +90,33 @@ function Home() {
 
         {/* Testimonial Section */}
         <h3 className="text-center text-primary mb-4">Our Testimonial</h3>
-        <Row className="g-4 justify-content-center">
-          {[face3, face2, face1].map((face, idx) => (
-            <Col key={idx} xs={12} sm={6} md={4}>
-              <Card className="shadow rounded-5 h-100 text-center">
-                <Card.Img variant="top" src={face} />
-                <Card.Body>
-                  <Card.Title>
-                    {idx === 0 ? 'Nita Marry' : idx === 1 ? 'Max Miller' : 'Devid Surya'}
-                  </Card.Title>
-                  <div className="mb-3">
-                    {[...Array(4)].map((_, i) => (
-                      <i key={i} className="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
-                    ))}
-                  </div>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of the
-                    card's content.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+      <Row className="g-4 justify-content-center">
+  {[face3, face2, face1].map((face, idx) => (
+    <Col key={idx} xs={12} sm={6} md={4}>
+      <Card className="shadow rounded-5 h-100 text-center">
+        <Card.Img variant="top" src={face} />
+        <Card.Body>
+          <Card.Title>
+            {idx === 0 ? 'Nita Marry' : idx === 1 ? 'Max Miller' : 'Devid Surya'}
+          </Card.Title>
+          <div className="mb-3">
+            {[...Array(4)].map((_, i) => (
+              <i key={i} className="fa-solid fa-star" style={{ color: '#FFD43B' }}></i>
+            ))}
+          </div>
+          <Card.Text>
+            {idx === 0
+              ? "ProjectFair helped me easily showcase my work and boost my visibility."
+              : idx === 1
+              ? "A smooth experience! Managing and updating my projects is super simple."
+              : "Loved it! A great platform to present skills and attract opportunities."}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Col>
+  ))}
+</Row>
+
       </Container>
 
       <ToastContainer position="top-right" autoClose={5000} theme="colored" />
